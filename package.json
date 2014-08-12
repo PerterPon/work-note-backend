@@ -1,0 +1,21 @@
+{
+  "name": "work-note-backend",
+  "main": "",
+  "version": "0.0.1",
+  "dependencies": {
+    "coffee-script-es6" : "*",
+    "koa"               : "*",
+    "options-stream"    : "*",
+    "koa-route"         : "*",
+    "response-path"     : "*",
+    "thunkify-wrap"     : "*"
+  },
+  "devDependencies": {
+  },
+  "engines": [
+    "node >=0.8.14"
+  ],
+  "scripts": {
+    "test": "make test"
+  }
+}
