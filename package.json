@@ -7,8 +7,9 @@
     "koa"               : "*",
     "options-stream"    : "*",
     "koa-route"         : "*",
-    "response-path"     : "*",
-    "thunkify-wrap"     : "*"
+    "response-patch"    : "*",
+    "thunkify-wrap"     : "*",
+    "mongoose"          : "*"
   },
   "devDependencies": {
   },
@@ -19,3 +20,8 @@
     "test": "make test"
   }
 }
+
+
+
+
+

@@ -12,8 +12,6 @@ koa   = require 'koa'
 
 route = require 'koa-route'
 
-Test  = require './test'
-
 class Aio
 
   constructor : ( @options = {} ) ->
@@ -22,8 +20,8 @@ class Aio
 
   useMiddleware : ->
     { app } = @
-    testApp = new Test
-    app.use route.get '/', testApp.middleware()
+    
+    # app.use route.get '/', testApp.middleware()
 
   listen : ( port, cb ) ->
     @app.listen port, cb
