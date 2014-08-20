@@ -141,9 +141,10 @@ function onCheckChange( event ) {
  * @return {[type]} [description]
  */
 function updateDate() {
-  var date    = moment().format( 'YYYY-MM-DD' );
+  var date = moment().format( 'YYYY-MM-DD' );
+  var host = config.host;
   $.ajax( {
-    url  : 'http://127.0.0.1:8000/note/' + date,
+    url  : host + '/note/' + date,
     type : 'POST',
     data : tableData,
     success : function(){
