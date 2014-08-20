@@ -16,6 +16,8 @@ Note  = require './note'
 
 koaBodyParse = require 'koa-body-parser'
 
+staticServer = require 'koa-static'
+
 class Aio
 
   constructor : ( @options = {} ) ->
@@ -29,10 +31,11 @@ class Aio
     app.use ( next ) -->
       @set 'Access-Control-Allow-Origin' : '*'
       yield next
-    app.use route.get    '/note', note.getNote()
-    app.use route.post   '/note', note.addNote()
-    app.use route.put    '/note', note.updateNote()
-    app.use route.delete '/note', note.deleteNote()
+    app.use staticServer "#{__dirname}/../res/"
+    app.use route.get    '/note/:date', note.getNote()
+    # app.use route.post   '/note', note.addNote()
+    app.use route.post   '/note/:date', note.updateNote()
+    app.use route.delete '/note/:date', note.deleteNote()
 
   listen : ( port, cb ) ->
     @app.listen port, cb

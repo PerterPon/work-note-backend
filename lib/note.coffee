@@ -23,47 +23,35 @@ class Note
     MongoClient.connect "mongodb://#{user}:#{password}@#{host}/#{db}", ( err, db ) ->
       return console.log err if err
       noteCol = db.collection 'note'
-      noteCol.update = ( args..., cb ) ->
-        cb new Error 'this is an error'
-      noteCol.insert = thunkify noteCol.insert
       noteCol.update = thunkify noteCol.update
 
   getNote : ->
     that = @
-    ( next ) -->
-      now     = moment().format 'YYYY-MM-DD'
-      res     = noteCol.find { date : now }
+    ( date ) -->
+      is_delete = 'n'
+      res     = noteCol.find { date, is_delete }, { _id : 0 }
       toArray = thunkify res.toArray
-      result  = yield toArray
+      that    = @
+      try
+        result  = yield toArray
+      catch e
+        that.body = 'this is an error'
       @body   = result
 
   updateNote : ->
     that = @
-    ( next ) -->
-      date      = moment().format 'YYYY-MM-DD'
+    ( date ) -->
       { body }  = @request
-      { index } = body
-      delete body.index
-      updateModel = 
-        '$set' : {}
-      updateModel[ '$set' ][ "#{note}.#{index}" ] = body
-      yield noteCol.update { date }, updateModel
-      this.body = 'ok'
-
-  addNote : ->
-    that = @
-    ( next ) -->
-      { body:notes }  = @request
-      date      = moment().format 'YYYY-MM-DD'
-      yield noteCol.update { date }, { '$set' : { date } }, { upsert : true }
-      yield noteCol.update { date }, { '$push' : { notes } }
+      # console.log date, body
+      yield noteCol.update { date }, body, true
       this.body = 'ok'
 
   deleteNote : ->
     that = @
-    ( next ) -->
-
-
+    ( date ) -->
+      is_delete = 'y'
+      yield noteCol.update { date }, { '$set' : { is_delete } }
+      this.body = 'ok'
 
 module.exports = ( options ) ->
   new Note options

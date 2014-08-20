@@ -11,7 +11,8 @@
     "thunkify-wrap"     : "*",
     "mongodb"           : "*",
     "moment"            : "*",
-    "koa-body-parser"   : "*"
+    "koa-body-parser"   : "*",
+    "koa-static"        : "*"
   },
   "devDependencies": {
   },
