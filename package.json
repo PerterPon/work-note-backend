@@ -9,7 +9,9 @@
     "koa-route"         : "*",
     "response-patch"    : "*",
     "thunkify-wrap"     : "*",
-    "mongoose"          : "*"
+    "mongodb"           : "*",
+    "moment"            : "*",
+    "koa-body-parser"   : "*"
   },
   "devDependencies": {
   },

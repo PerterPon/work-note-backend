@@ -5,9 +5,9 @@ App = require '../lib/aio'
 
 config = require '../etc/default.config.yaml'
 
-{ options, port } = config
+{ port } = config
 
-app = new App options
+app = new App config
 
 app.listen port, ( err ) ->
   throw err if err

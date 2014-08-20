@@ -12,6 +12,10 @@ koa   = require 'koa'
 
 route = require 'koa-route'
 
+Note  = require './note'
+
+koaBodyParse = require 'koa-body-parser'
+
 class Aio
 
   constructor : ( @options = {} ) ->
@@ -19,9 +23,16 @@ class Aio
     @useMiddleware()
 
   useMiddleware : ->
-    { app } = @
-    
-    # app.use route.get '/', testApp.middleware()
+    { app, options } = @
+    note    = Note options
+    app.use koaBodyParse()
+    app.use ( next ) -->
+      @set 'Access-Control-Allow-Origin' : '*'
+      yield next
+    app.use route.get    '/note', note.getNote()
+    app.use route.post   '/note', note.addNote()
+    app.use route.put    '/note', note.updateNote()
+    app.use route.delete '/note', note.deleteNote()
 
   listen : ( port, cb ) ->
     @app.listen port, cb
