@@ -8,7 +8,7 @@
 "use strict"
 
 var config = {
-  host : 'http://127.0.0.1:8000'
+  host : 'http://perterpon.wicp.net:8000'
 };
 
 var tableData = null;
