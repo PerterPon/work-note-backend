@@ -42,8 +42,7 @@ class Note
     that = @
     ( date ) -->
       { body }  = @request
-      # console.log date, body
-      yield noteCol.update { date }, body, true
+      yield noteCol.update { date }, body, { upsert : true }
       this.body = 'ok'
 
   deleteNote : ->

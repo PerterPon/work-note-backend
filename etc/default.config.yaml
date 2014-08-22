@@ -6,9 +6,3 @@ mongo:
   user : 'note'
   password : 'hello1234'
   db   : 'note'
-
-# mongo:
-#   host : '127.0.0.1'
-#   user : 'note'
-#   password : 'hello1234'
-#   db   : 'note'
