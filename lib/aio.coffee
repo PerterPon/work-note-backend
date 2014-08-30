@@ -12,30 +12,41 @@ koa   = require 'koa'
 
 route = require 'koa-route'
 
-Note  = require './note'
+Note  = require './controller/note'
 
 koaBodyParse = require 'koa-body-parser'
 
 staticServer = require 'koa-static'
 
+db    = require( './core/db' )()
+
 class Aio
 
   constructor : ( @options = {} ) ->
+    @init options
     @app = koa()
     @useMiddleware()
+
+  init : ( options ) ->
+    db.init options.mysql, console
 
   useMiddleware : ->
     { app, options } = @
     note    = Note options
     app.use koaBodyParse()
+    # to allow cross domain
     app.use ( next ) -->
       @set 'Access-Control-Allow-Origin' : '*'
-      yield next
+      if @method.toUpperCase() is 'OPTIONS'
+        @set 'Access-Control-Allow-Methods', 'GET,POST,DELETE,PUT'        
+        @body = ''
+      else
+        yield next
     app.use staticServer "#{__dirname}/../res/"
-    app.use route.get    '/note/:date', note.getNote()
-    # app.use route.post   '/note', note.addNote()
-    app.use route.post   '/note/:date', note.updateNote()
-    app.use route.delete '/note/:date', note.deleteNote()
+    app.use route.get    '/note', note.getNote()
+    app.use route.post   '/note', note.addNote()
+    app.use route.put    '/note/:id', note.updateNote()
+    app.use route.delete '/note/:id', note.deleteNote()
 
   listen : ( port, cb ) ->
     @app.listen port, cb

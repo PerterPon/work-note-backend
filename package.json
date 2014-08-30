@@ -9,10 +9,12 @@
     "koa-route"         : "*",
     "response-patch"    : "*",
     "thunkify-wrap"     : "*",
-    "mongodb"           : "*",
     "moment"            : "*",
     "koa-body-parser"   : "*",
-    "koa-static"        : "*"
+    "koa-static"        : "*",
+    "options-stream"    : "*",
+    "event-pipe"        : "*",
+    "mysql"             : "*"
   },
   "devDependencies": {
   },

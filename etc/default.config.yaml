@@ -1,6 +1,13 @@
 
 port : 8000
 
+mysql:
+  host : 'perterpon.mysql.rds.aliyuncs.com'
+  user : 'note'
+  password : 'hello1234'
+  database : 'note'
+  port     : 3306
+
 mongo:
   host : 'perterpon.wicp.net'
   user : 'note'
