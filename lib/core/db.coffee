@@ -76,7 +76,7 @@ class Db
         if values.hasOwnProperty key
           return pool.escape values[key]
         else
-          return null
+          return ":#{key}"
     sql : sql
 
   query : ( sql, where, cb ) ->
