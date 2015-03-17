@@ -14,7 +14,7 @@ route = require 'koa-route'
 
 Note  = require './controller/note'
 
-koaBodyParse = require 'koa-body-parser'
+koaBodyParse = require 'koa-bodyparser'
 
 staticServer = require 'koa-static'
 
@@ -35,7 +35,7 @@ class Aio
     note    = Note options
     app.use koaBodyParse()
     # to allow cross domain
-    app.use ( next ) -->
+    app.use ( next ) ->
       @set 'Access-Control-Allow-Origin' : '*'
       if @method.toUpperCase() is 'OPTIONS'
         @set 'Access-Control-Allow-Methods', 'GET,POST,DELETE,PUT'        

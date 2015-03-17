@@ -22,7 +22,7 @@ class Note
 
   getNote : ->
     that = @
-    ( date, next ) -->
+    ( date, next ) ->
       try
         data  = yield noteModule.getUnDoneNote date
         @body = data
@@ -32,7 +32,7 @@ class Note
 
   addNote : ->
     that = @
-    ( next ) -->
+    ( next ) ->
       { body }  = @request
       body.done = body.done is 'true'
       try
@@ -44,7 +44,7 @@ class Note
 
   updateNote : ->
     that = @
-    ( id, next ) -->
+    ( id, next ) ->
       { body } = @request
       try
         yield noteModule.updateNote body
@@ -55,7 +55,7 @@ class Note
 
   deleteNote : ->
     that = @
-    ( id, next ) -->
+    ( id, next ) ->
       try
         yield noteModule.deleteNote id
       catch e
