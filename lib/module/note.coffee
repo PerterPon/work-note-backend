@@ -17,7 +17,8 @@ GET_UN_DONE_NOTE =
     close
   FROM
     note
-  WHERE done = 'n';
+  WHERE done = 'n'
+  ORDER BY id DESC;
   """
 
 ADD_NOTE =
