@@ -1,30 +1,37 @@
+#!/usr/bin/env node
 
-require 'options-stream'
+"use strict";
 
-App = require '../lib/aio'
+require( 'coffee-script' ).register();
 
-config = require '../etc/default.config.yaml'
+require( 'options-stream' );
 
-{ port } = config
+var App    = require( '../lib/aio' );
 
-app = new App config
+var config = require( '../etc/default.config.yaml' );
 
-app.listen port, ( err ) ->
-  throw err if err
-  console.log "server listing: #{port}"
+var port   = config.port;
 
-quit = () ->
-  console.log 'server quit'
+var app    = new App( config );
+
+app.listen( port, function( err ){
+  if ( err ) {
+    throw err;
+  }
+  console.log( 'server listening on port: ' + port );
+} );
+
+var quit = function () {
+  console.log( 'server quit' )
   process.exit()
+}
 
-process.on 'SIGINT',  quit
-process.on 'SIGQUIT', quit
-process.on 'exit',    quit
+process.on( 'SIGINT',  quit );
+process.on( 'SIGQUIT', quit );
+process.on( 'exit',    quit );
 
-process.on 'uncaughtException', (err)->
-  console.log err
-  console.log "---------"
-  console.log err.stack
-  quit()
-
-
+process.on( 'uncaughtException', function( err ) {
+  console.log( err.message );
+  console.log( '--------' );
+  console.log( err.stack );
+} );

@@ -10,6 +10,7 @@
     "thunkify-wrap"     : "*",
     "moment"            : "*",
     "koa-bodyparser"    : "*",
+    "coffee-script"     : "*",
     "koa-static"        : "*",
     "options-stream"    : "*",
     "event-pipe"        : "*",

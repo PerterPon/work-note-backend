@@ -23,6 +23,7 @@ db    = require( './core/db' )()
 class Aio
 
   constructor : ( @options = {} ) ->
+    { options } = @
     @init options
     @app = koa()
     @useMiddleware()
