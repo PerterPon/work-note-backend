@@ -10,23 +10,14 @@
 
 GET_UN_DONE_NOTE =
   """
-  SELECT 
+  SELECT
     id,
     content,
-    done
-  FROM note
-  WHERE is_delete = 'n'
-    AND done = 'n'
-    AND begin < :date
-  UNION
-  SELECT 
-    id,
-    content,
-    done
-  FROM note
-  WHERE begin BETWEEN CONCAT( :date, ' 00:00:00' ) AND CONCAT( :date ' 23:59:59' )
-    AND is_delete = 'n'
-  ORDER BY id DESC;
+    done,
+    close
+  FROM
+    note
+  WHERE done = 'n';
   """
 
 ADD_NOTE =
@@ -64,9 +55,8 @@ db = require( '../core/db' )()
 
 class Note
 
-  getUnDoneNote : ( date, cb ) ->
-    where = { date }
-    db.query GET_UN_DONE_NOTE, where, cb
+  getUnDoneNote : ( cb ) ->
+    db.query GET_UN_DONE_NOTE, {}, cb
 
   addNote : ( note, cb ) ->
     where = note

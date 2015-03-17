@@ -22,9 +22,9 @@ class Note
 
   getNote : ->
     that = @
-    ( date, next ) ->
+    ( next ) ->
       try
-        data  = yield noteModule.getUnDoneNote date
+        data  = yield noteModule.getUnDoneNote()
         @body = data
       catch e
         console.log e

@@ -44,8 +44,8 @@ class Aio
       else
         yield next
     app.use staticServer "#{__dirname}/../res/"
-    app.use route.get    '/note/:date', note.getNote()
-    app.use route.post   '/note', note.addNote()
+    app.use route.get    '/note',     note.getNote()
+    app.use route.post   '/note',     note.addNote()
     app.use route.put    '/note/:id', note.updateNote()
     app.use route.delete '/note/:id', note.deleteNote()
 
