@@ -17,7 +17,8 @@ GET_UN_DONE_NOTE =
     close
   FROM
     note
-  WHERE done = 'n'
+  WHERE done      = 'n'
+    AND is_delete = 'n'
   ORDER BY id DESC;
   """
 
@@ -47,7 +48,7 @@ DELETE_NOTE =
   """
   UPDATE note
   SET
-    is_delete = :is_delete
+    is_delete = 'y'
   WHERE
     id = :id;
   """
@@ -67,7 +68,7 @@ class Note
     where = note
     db.query UPDATE_NOTE, where, cb
 
-  deleteNote : ( id, note, cb ) ->
+  deleteNote : ( id, cb ) ->
     where = { id }
     db.query DELETE_NOTE, where, cb
 

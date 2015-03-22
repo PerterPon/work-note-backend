@@ -58,6 +58,7 @@ class Note
     ( id, next ) ->
       try
         yield noteModule.deleteNote id
+        @body = 'ok'
       catch e
         console.log e
         @throw 'someting error', 500
