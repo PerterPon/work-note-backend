@@ -8,60 +8,51 @@
 
 "use strict"
 
-thunkify     = require 'thunkify-wrap'
-
 noteModule = require( '../module/note' )()
 
 class Note
 
   constructor : ( @options ) ->
-    noteModule.getUnDoneNote = thunkify noteModule.getUnDoneNote
-    noteModule.addNote       = thunkify noteModule.addNote
-    noteModule.updateNote    = thunkify noteModule.updateNote
-    noteModule.deleteNote    = thunkify noteModule.deleteNote
 
   getNote : ->
     that = @
     ( next ) ->
-      try
-        data  = yield noteModule.getUnDoneNote()
-        @body = data
-      catch e
-        console.log e
-        @throw 'something error', 500
+      userId = @headers[ 'x-user-id' ]
+      data   = yield noteModule.getUnDoneNote userId
+      @body  = data
 
   addNote : ->
     that = @
     ( next ) ->
       { body }  = @request
+      userId    = @headers[ 'x-user-id' ]
       body.done = body.done is 'true'
-      try
-        yield noteModule.addNote body
-        @body = 'ok'
-      catch e
-        console.log e
-        @throw 'someting error', 500
+      yield noteModule.addNote body, userId
+      @body = 'ok'
 
   updateNote : ->
     that = @
     ( id, next ) ->
+      userId   = @headers[ 'x-user-id' ]
       { body } = @request
-      try
-        yield noteModule.updateNote body
-        @body = 'ok'
-      catch e
-        console.log e
-        @throw 'something error', 500
+      yield noteModule.updateNote body, userId
+      @body    = 'ok'
 
   deleteNote : ->
     that = @
     ( id, next ) ->
+      userId   = @headers[ 'x-user-id' ]
+      yield noteModule.deleteNote id, userId
+      @body    = 'ok'
+
+  errorHandler : ->
+    ( next ) ->
       try
-        yield noteModule.deleteNote id
-        @body = 'ok'
+        yield next
       catch e
         console.log e
         @throw 'someting error', 500
+      
 
 module.exports = ( options ) ->
   new Note options

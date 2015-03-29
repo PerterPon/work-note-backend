@@ -11,26 +11,44 @@
 GET_UN_DONE_NOTE =
   """
   SELECT
-    id,
+    note.id,
     content,
     done,
     close
   FROM
     note
+  LEFT JOIN user
+  ON note.user    = user.id
   WHERE done      = 'n'
     AND is_delete = 'n'
-  ORDER BY id DESC;
+    AND user.email_hash = :hash
+  ORDER BY note.id DESC;
   """
+
+# ADD_NOTE =
+#   """
+#   INSERT INTO note(
+#     begin,
+#     content
+#   ) VALUES (
+#     now(),
+#     :content
+#   );
+#   """
 
 ADD_NOTE =
   """
   INSERT INTO note(
+    user,
     begin,
     content
-  ) VALUES (
-    now(),
-    :content
-  );
+  )
+  SELECT
+    user.id  AS user,
+    now()    AS begin,
+    :content AS content
+  FROM user
+  WHERE email_hash = :hash;
   """
 
 UPDATE_NOTE =
@@ -53,23 +71,27 @@ DELETE_NOTE =
     id = :id;
   """
 
-db = require( '../core/db' )()
+db       = require( '../core/db' )()
+
+thunkify = require 'thunkify-wrap'
 
 class Note
 
-  getUnDoneNote : ( cb ) ->
-    db.query GET_UN_DONE_NOTE, {}, cb
+  getUnDoneNote : thunkify ( hash, cb ) ->
+    db.query GET_UN_DONE_NOTE, { hash }, cb
 
-  addNote : ( note, cb ) ->
+  addNote : thunkify ( note, hash, cb ) ->
     where = note
+    where.hash = hash
     db.query ADD_NOTE, where, cb
 
-  updateNote : ( note, cb ) ->
+  updateNote : thunkify ( note, hash, cb ) ->
     where = note
+    where.hash = hash
     db.query UPDATE_NOTE, where, cb
 
-  deleteNote : ( id, cb ) ->
-    where = { id }
+  deleteNote : thunkify ( id, hash,cb ) ->
+    where = { id, hash }
     db.query DELETE_NOTE, where, cb
 
 module.exports = ->

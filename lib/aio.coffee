@@ -14,6 +14,8 @@ route = require 'koa-route'
 
 Note  = require './controller/note'
 
+User  = require './controller/user'
+
 koaBodyParse = require 'koa-bodyparser'
 
 staticServer = require 'koa-static'
@@ -33,17 +35,27 @@ class Aio
 
   useMiddleware : ->
     { app, options } = @
-    note    = Note options
+    note = Note options
+    user = User options
     app.use koaBodyParse()
     # to allow cross domain
     app.use ( next ) ->
       @set 'Access-Control-Allow-Origin' : '*'
       if @method.toUpperCase() is 'OPTIONS'
-        @set 'Access-Control-Allow-Methods', 'GET,POST,DELETE,PUT'        
+        @set 'Access-Control-Allow-Methods', 'GET,POST,DELETE,PUT'
+        @set 'Access-Control-Allow-Headers', 'X-USER-ID'
         @body = ''
       else
         yield next
+
     app.use staticServer "#{__dirname}/../res/"
+
+    # user
+    app.use route.all    '/user',     user.errorHandler()
+    app.use route.post   '/user',     user.addUser() 
+
+    # note
+    app.use route.all    '/note',     note.errorHandler()
     app.use route.get    '/note',     note.getNote()
     app.use route.post   '/note',     note.addNote()
     app.use route.put    '/note/:id', note.updateNote()
